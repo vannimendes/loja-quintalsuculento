@@ -1,1 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f4ed">
+  <title>Loja | Quintal Suculento</title>
+  <meta name="description" content="Produtos do Quintal Suculento disponíveis para pronta entrega.">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 
+  <style>
+    :root {
+      --verde: #0a5a40;
+      --verde-escuro: #063d2d;
+      --laranja: #c7773b;
+      --off-white: #f7f4ed;
+      --papel: #fffdf8;
+      --texto: #173b30;
+      --texto-suave: #687a73;
+      --linha: rgba(10, 90, 64, 0.12);
+      --linha-forte: rgba(10, 90, 64, 0.18);
+      --sombra-modal: 0 28px 80px rgba(19, 41, 33, 0.20);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--off-white);
+      color: var(--texto);
+      font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    img { max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    .container {
+      width: min(1220px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 24px 0 20px;
+    }
+
+    .brand {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .brand img {
+      width: 108px;
+      height: auto;
+      display: block;
+    }
+
+    .brand-line {
+      width: 38px;
+      height: 2px;
+      margin: 13px auto 0;
+      border-radius: 999px;
+      background: var(--laranja);
+    }
+
+    main {
+      padding: 4px 0 70px;
+    }
+
+    .shop-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 0 22px;
+      border-bottom: 1px solid var(--linha);
+      margin-bottom: 28px;
+    }
+
+    .shop-title {
+      margin: 0;
+      color: var(--verde-escuro);
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      line-height: 1;
+      letter-spacing: -0.045em;
+      font-weight: 700;
+    }
+
+    .shop-note {
+      margin: 0;
+      color: var(--texto-suave);
+      font-size: 0.86rem;
+      text-align: right;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 34px 24px;
+    }
+
+    .product {
+      min-width: 0;
+    }
+
+    .product-trigger {
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .product-image {
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      padding: 18px;
+      background:
+        radial-gradient(circle at 50% 38%, #ffffff 0%, #fbfaf6 68%, #f1eee6 100%);
+      border: 1px solid rgba(10, 90, 64, 0.07);
+      border-radius: 18px;
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .product-trigger:hover .product-image {
+      transform: translateY(-2px);
+      border-color: var(--linha-forte);
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+      transition: transform 240ms ease;
+    }
+
+    .product-trigger:hover .product-image img {
+      transform: scale(1.012);
+    }
+
+    .product-info {
+      padding: 13px 2px 0;
+    }
+
+    .product-name {
+      margin: 0;
+      color: var(--verde-escuro);
+      font-size: 1rem;
+      line-height: 1.35;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+    }
+
+    .product-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 7px;
+    }
+
+    .price {
+      color: var(--verde-escuro);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .unit {
+      color: var(--texto-suave);
+      font-size: 0.78rem;
+      text-align: right;
+    }
+
+    .view-product {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      color: var(--verde);
+      font-size: 0.81rem;
+      font-weight: 650;
+    }
+
+    .view-product span {
+      transition: transform 160ms ease;
+    }
+
+    .product-trigger:hover .view-product span {
+      transform: translateX(3px);
+    }
+
+    footer {
+      padding: 0 0 38px;
+    }
+
+    .footer-inner {
+      padding-top: 28px;
+      border-top: 1px solid var(--linha);
+      text-align: center;
+    }
+
+    .footer-logo {
+      width: 52px;
+      height: auto;
+      margin-bottom: 8px;
+    }
+
+    .footer-phrase {
+      margin: 0;
+      color: var(--verde-escuro);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1rem;
+      font-style: italic;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin-top: 11px;
+      color: var(--texto-suave);
+      font-size: 0.8rem;
+    }
+
+    .footer-links a:hover {
+      color: var(--verde);
+    }
+
+    .product-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(7, 28, 21, 0.76);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .product-modal.open {
+      display: flex;
+    }
+
+    .modal-card {
+      position: relative;
+      width: min(1040px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      background: var(--papel);
+      border-radius: 22px;
+      box-shadow: var(--sombra-modal);
+    }
+
+    .modal-media {
+      position: relative;
+      min-height: 560px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 38%, #ffffff 0%, #fbfaf6 70%, #f1eee6 100%);
+      border-right: 1px solid var(--linha);
+    }
+
+    .modal-image {
+      width: 100%;
+      height: 100%;
+      max-height: 76vh;
+      object-fit: contain;
+      padding: 32px;
+      display: block;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 5;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--linha);
+      border-radius: 50%;
+      color: var(--verde-escuro);
+      background: rgba(255, 253, 248, 0.95);
+      cursor: pointer;
+      font-size: 1.25rem;
+    }
+
+    .modal-prev,
+    .modal-next {
+      position: absolute;
+      top: 50%;
+      z-index: 4;
+      width: 42px;
+      height: 42px;
+      margin-top: -21px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 50%;
+      color: #fff;
+      background: rgba(6, 61, 45, 0.72);
+      cursor: pointer;
+      font-size: 1.25rem;
+    }
+
+    .modal-prev { left: 15px; }
+    .modal-next { right: 15px; }
+
+    .modal-details {
+      display: flex;
+      flex-direction: column;
+      padding: 46px 40px 38px;
+    }
+
+    .modal-kicker {
+      margin: 0 0 10px;
+      color: var(--verde);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .modal-name {
+      margin: 0;
+      color: var(--verde-escuro);
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      line-height: 1.08;
+      letter-spacing: -0.045em;
+      font-weight: 700;
+    }
+
+    .modal-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-top: 18px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--linha);
+    }
+
+    .modal-price {
+      color: var(--verde-escuro);
+      font-size: 1.35rem;
+      font-weight: 750;
+    }
+
+    .modal-unit {
+      color: var(--texto-suave);
+      font-size: 0.84rem;
+    }
+
+    .availability {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      width: fit-content;
+      margin-top: 18px;
+      color: var(--verde);
+      font-size: 0.82rem;
+      font-weight: 650;
+    }
+
+    .availability-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3d9f67;
+    }
+
+    .modal-description {
+      margin: 20px 0 26px;
+      color: var(--texto-suave);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    .modal-buy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-top: auto;
+      padding: 14px 18px;
+      border-radius: 13px;
+      color: #fff;
+      background: var(--verde);
+      font-size: 0.92rem;
+      font-weight: 700;
+      transition: background 170ms ease, transform 170ms ease;
+    }
+
+    .modal-buy:hover {
+      background: var(--verde-escuro);
+      transform: translateY(-1px);
+    }
+
+    .modal-count {
+      margin-top: 12px;
+      color: var(--texto-suave);
+      font-size: 0.76rem;
+      text-align: center;
+    }
+
+    @media (max-width: 920px) {
+      .products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .modal-card {
+        grid-template-columns: 1fr;
+        max-width: 720px;
+      }
+
+      .modal-media {
+        min-height: 430px;
+        border-right: 0;
+        border-bottom: 1px solid var(--linha);
+      }
+
+      .modal-details {
+        padding: 30px 28px 28px;
+      }
+
+      .modal-buy {
+        margin-top: 8px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .container {
+        width: min(100% - 22px, 1220px);
+      }
+
+      header {
+        padding: 18px 0 13px;
+      }
+
+      .brand img {
+        width: 94px;
+      }
+
+      .brand-line {
+        width: 32px;
+        margin-top: 10px;
+      }
+
+      main {
+        padding-top: 0;
+        padding-bottom: 48px;
+      }
+
+      .shop-head {
+        align-items: start;
+        flex-direction: column;
+        gap: 5px;
+        padding: 12px 0 15px;
+        margin-bottom: 18px;
+      }
+
+      .shop-title {
+        font-size: 1.55rem;
+      }
+
+      .shop-note {
+        text-align: left;
+        font-size: 0.78rem;
+      }
+
+      .products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px 12px;
+      }
+
+      .product-image {
+        padding: 8px;
+        border-radius: 14px;
+      }
+
+      .product-info {
+        padding: 10px 1px 0;
+      }
+
+      .product-name {
+        font-size: 0.88rem;
+        line-height: 1.28;
+      }
+
+      .product-meta {
+        align-items: start;
+        flex-direction: column;
+        gap: 2px;
+        margin-top: 6px;
+      }
+
+      .price {
+        font-size: 0.93rem;
+      }
+
+      .unit {
+        font-size: 0.7rem;
+        text-align: left;
+      }
+
+      .view-product {
+        margin-top: 7px;
+        font-size: 0.73rem;
+      }
+
+      .product-modal {
+        align-items: end;
+        padding: 0;
+      }
+
+      .modal-card {
+        width: 100%;
+        max-height: 94vh;
+        border-radius: 22px 22px 0 0;
+      }
+
+      .modal-media {
+        min-height: 330px;
+      }
+
+      .modal-image {
+        max-height: 52vh;
+        padding: 24px;
+      }
+
+      .modal-details {
+        padding: 24px 20px 22px;
+      }
+
+      .modal-name {
+        font-size: 1.65rem;
+      }
+
+      .modal-description {
+        font-size: 0.91rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <a class="brand" href="https://quintalsuculento.com.br" aria-label="Quintal Suculento">
+        <img src="logo-cacto.png" alt="Quintal Suculento">
+      </a>
+      <div class="brand-line"></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="shop-head">
+        <h1 class="shop-title">Disponíveis agora</h1>
+        <p class="shop-note">Pronta entrega · consulte disponibilidade pelo WhatsApp</p>
+      </div>
+
+      <section class="products" id="products" aria-label="Produtos disponíveis"></section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <img class="footer-logo" src="logo-cacto.png" alt="">
+      <p class="footer-phrase">Nós somos a Natureza.</p>
+
+      <div class="footer-links">
+        <a href="https://quintalsuculento.com.br">quintalsuculento.com.br</a>
+        <a href="https://instagram.com/quintalsuculento" target="_blank" rel="noopener noreferrer">@quintalsuculento</a>
+        <a href="https://wa.me/5571987650501" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="product-modal" id="productModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalName">
+      <button class="modal-close" id="modalClose" aria-label="Fechar">×</button>
+
+      <div class="modal-media">
+        <button class="modal-prev" id="modalPrev" aria-label="Imagem anterior">‹</button>
+        <img class="modal-image" id="modalImage" src="" alt="">
+        <button class="modal-next" id="modalNext" aria-label="Próxima imagem">›</button>
+      </div>
+
+      <div class="modal-details">
+        <p class="modal-kicker">Quintal Suculento</p>
+        <h2 class="modal-name" id="modalName"></h2>
+
+        <div class="modal-price-row">
+          <span class="modal-price" id="modalPrice"></span>
+          <span class="modal-unit" id="modalUnit"></span>
+        </div>
+
+        <div class="availability">
+          <span class="availability-dot"></span>
+          Disponível para pronta entrega
+        </div>
+
+        <p class="modal-description" id="modalDescription"></p>
+
+        <a
+          class="modal-buy"
+          id="modalBuy"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Comprar pelo WhatsApp
+        </a>
+
+        <div class="modal-count" id="modalCount"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const produtos = [
+      {
+        id: "mini-suculenta",
+        nome: "Mini Suculenta ou Cacto para Lembrança",
+        preco: "R$ 20,00",
+        unidade: "1 unidade",
+        descricao: "Em encomendas podemos personalizar as informações do rótulo e da embalagem de papel que acompanha a planta.",
+        imagens: ["images/produtos/Mini Suculenta.png"]
+      },
+      {
+        id: "substrato-premium",
+        nome: "Substrato Premium para Cactos & Suculentas",
+        preco: "R$ 20,00",
+        unidade: "1 L",
+        descricao: "Esse é o substrato que preparamos aqui no Quintal Suculento para o cultivo de cactos e suculentas.\n\nEle já vai pronto para uso, então você pode utilizar tanto no plantio quanto na manutenção das suas plantinhas.\n\nÉ o mesmo cuidado que temos com as plantas do Quintal, agora preparado para você cuidar das suas também.",
+        imagens: ["images/produtos/Substrato Premium.png"]
+      },
+      {
+        id: "pedrinhas-beira-rio",
+        nome: "Pedrinhas Beira Rio",
+        preco: "R$ 10,00",
+        unidade: "1 pacote pequeno",
+        descricao: "Pedrinhas naturais para cobertura de solo e decoração.",
+        imagens: ["images/produtos/Pedrinhas Beira Rio.png"]
+      },
+      {
+        id: "palo-santo",
+        nome: "Incenso de Palo Santo",
+        preco: "R$ 35,00",
+        unidade: "3 unidades",
+        descricao: "A madeira utilizada é proveniente de árvores que morrem naturalmente e completam seu ciclo, permanecendo em repouso antes de ser coletada. É nesse processo que a madeira adquire seu aroma amadeirado tão característico, resultado dos compostos aromáticos naturalmente presentes no Palo Santo.\n\nTransformada em incenso, essa madeira leva para cada ambiente não apenas seu aroma inconfundível, mas uma história de respeito ao tempo da natureza.",
+        imagens: [
+          "images/produtos/Palo Santo.png",
+          "images/produtos/Palo Santo Rótulo.png"
+        ]
+      },
+      {
+        id: "ecobag",
+        nome: "EcoBag Somos a Natureza",
+        preco: "R$ 50,00",
+        unidade: "1 unidade",
+        descricao: "Ecobag do Quintal Suculento Nós Somos a Natureza.",
+        imagens: ["images/produtos/EcoBag Somos a Natureza.png"]
+      },
+      {
+        id: "tshirt-jardim-encantado",
+        nome: "T-Shirt Jardim Encantado",
+        preco: "R$ 120,00",
+        unidade: "1 unidade",
+        descricao: "Minijardim real do Quintal Suculento agora em formato de T-shirt!",
+        imagens: ["images/produtos/T-Shirt Jardim Encantado.png"]
+      },
+      {
+        id: "regata-jardim-encantado",
+        nome: "Regata Jardim Encantado",
+        preco: "R$ 120,00",
+        unidade: "1 unidade",
+        descricao: "Minijardim real do Quintal Suculento agora em formato de Regata!",
+        imagens: ["images/produtos/Regata Jardim Encantado.png"]
+      },
+      {
+        id: "tshirt-refugio-verde",
+        nome: "T-Shirt Refúgio Verde",
+        preco: "R$ 120,00",
+        unidade: "1 unidade",
+        descricao: "Minijardim real do Quintal Suculento agora em formato de T-shirt!",
+        imagens: ["images/produtos/T-shirt Refúgio Verde.png"]
+      },
+      {
+        id: "regata-refugio-verde",
+        nome: "Regata Refúgio Verde",
+        preco: "R$ 120,00",
+        unidade: "1 unidade",
+        descricao: "Minijardim real do Quintal Suculento agora em formato de Regata!",
+        imagens: ["images/produtos/Regata Refúgio verde.png"]
+      }
+    ];
+
+    const productsEl = document.getElementById("products");
+
+    function escapeHtml(texto) {
+      return String(texto)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function renderProducts() {
+      productsEl.innerHTML = produtos.map(produto => `
+        <article class="product">
+          <button
+            class="product-trigger"
+            data-product="${escapeHtml(produto.id)}"
+            aria-label="Ver ${escapeHtml(produto.nome)}"
+          >
+            <div class="product-image">
+              <img
+                src="${escapeHtml(produto.imagens[0])}"
+                alt="${escapeHtml(produto.nome)}"
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+
+            <div class="product-info">
+              <h2 class="product-name">${escapeHtml(produto.nome)}</h2>
+
+              <div class="product-meta">
+                <span class="price">${escapeHtml(produto.preco)}</span>
+                <span class="unit">${escapeHtml(produto.unidade)}</span>
+              </div>
+
+              <span class="view-product">
+                Ver produto <span>→</span>
+              </span>
+            </div>
+          </button>
+        </article>
+      `).join("");
+
+      document.querySelectorAll(".product-trigger").forEach(button => {
+        button.addEventListener("click", () => {
+          const produto = produtos.find(item => item.id === button.dataset.product);
+          if (produto) openProduct(produto);
+        });
+      });
+    }
+
+    const modal = document.getElementById("productModal");
+    const modalClose = document.getElementById("modalClose");
+    const modalImage = document.getElementById("modalImage");
+    const modalName = document.getElementById("modalName");
+    const modalPrice = document.getElementById("modalPrice");
+    const modalUnit = document.getElementById("modalUnit");
+    const modalDescription = document.getElementById("modalDescription");
+    const modalBuy = document.getElementById("modalBuy");
+    const modalPrev = document.getElementById("modalPrev");
+    const modalNext = document.getElementById("modalNext");
+    const modalCount = document.getElementById("modalCount");
+
+    let activeProduct = null;
+    let activeImageIndex = 0;
+
+    function updateProductModal() {
+      if (!activeProduct) return;
+
+      modalImage.src = activeProduct.imagens[activeImageIndex];
+      modalImage.alt = `${activeProduct.nome}, imagem ${activeImageIndex + 1}`;
+      modalName.textContent = activeProduct.nome;
+      modalPrice.textContent = activeProduct.preco;
+      modalUnit.textContent = activeProduct.unidade;
+      modalDescription.textContent = activeProduct.descricao;
+
+      const message =
+        `Olá! Vim pelo site do Quintal Suculento 🌿\n` +
+        `Tenho interesse em: ${activeProduct.nome} (${activeProduct.preco}).\n` +
+        `Ainda está disponível para pronta entrega?`;
+
+      modalBuy.href = `https://wa.me/5571987650501?text=${encodeURIComponent(message)}`;
+
+      const hasGallery = activeProduct.imagens.length > 1;
+      modalPrev.style.display = hasGallery ? "grid" : "none";
+      modalNext.style.display = hasGallery ? "grid" : "none";
+      modalCount.textContent = hasGallery
+        ? `${activeImageIndex + 1} de ${activeProduct.imagens.length}`
+        : "";
+    }
+
+    function openProduct(produto) {
+      activeProduct = produto;
+      activeImageIndex = 0;
+      updateProductModal();
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeProduct() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      activeProduct = null;
+    }
+
+    function changeImage(direction) {
+      if (!activeProduct) return;
+      activeImageIndex =
+        (activeImageIndex + direction + activeProduct.imagens.length) %
+        activeProduct.imagens.length;
+      updateProductModal();
+    }
+
+    modalClose.addEventListener("click", closeProduct);
+    modalPrev.addEventListener("click", () => changeImage(-1));
+    modalNext.addEventListener("click", () => changeImage(1));
+
+    modal.addEventListener("click", event => {
+      if (event.target === modal) closeProduct();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (!modal.classList.contains("open")) return;
+      if (event.key === "Escape") closeProduct();
+      if (event.key === "ArrowLeft") changeImage(-1);
+      if (event.key === "ArrowRight") changeImage(1);
+    });
+
+    renderProducts();
+  </script>
+</body>
+</html>
